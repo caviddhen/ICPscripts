@@ -22,11 +22,12 @@ h12 <- toolGetMapping("h12.csv", type = "regional") %>%
 #   mutate(value = value * 1.23) %>% #USD inflation rate
 #   rename("magPrice" = "value")
 
-#FAOexpenditures_newProc_CaterSplit on cluster
+#FAOexpenditures_newProc_CaterSplit on cluster, #take away the filled in...
 
 load("FAOpmag.Rda")
 FAOp <- FAOpmag
 FAOp[FAOp == 0] <- NA
+
 
 iso <- getItems(FAOp, dim = 1)
 items <- getItems(FAOp, dim = 3)
@@ -60,11 +61,11 @@ prpr <- FAOp %>%  as.data.frame(rev = 2) %>%
     rename( "iso3c"= ISO, "year" = Year, "k" = ItemCodeItem, "value" = ".value") %>%
     inner_join(h12)   %>%
     inner_join(kBH) %>%
-    GDPuc::convertGDP(unit_in = "constant 2005 US$MER",
-                     unit_out = "constant 2017 US$MER",
-                     replace_NAs = "no_conversion") %>%
-    #mutate(value = value * 1.23) %>% #USD inflation rate
-    rename("magPrice" = "value")
+  GDPuc::convertGDP(unit_in = "constant 2017 US$MER",
+                   unit_out = "constant 2005 US$MER",
+                   replace_NAs = "no_conversion") %>%
+     mutate(value = value * 1.23) %>% #USD inflation rate
+  rename("magPrice" = "value")
 
 
 
@@ -220,7 +221,7 @@ yi4 <- readxl::read_xlsx("YiSourceFig4.xlsx", skip =1) %>%
   group_by(Country, year) %>%
   summarise(YifarmAHshr = mean(YifarmAHshr, na.rm =T)) %>%
   ungroup()
-yi4$iso3c <- toolCountry2isocode(yi4$Country, mapping = list(c("Korea, Rep." = "KOR")) )
+yi4$iso3c <- toolCountry2isocode(yi4$Country, mapping = c("Korea, Rep." = "KOR") )
 
 compyi4 <-  select(magExpMeanK, iso3c, year, farmShrAH) %>%
   inner_join( select(yi4, iso3c, year, YifarmAHshr)) %>%

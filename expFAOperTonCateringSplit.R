@@ -369,7 +369,7 @@ FAOmarkup3 <- inner_join(FAOmarkup2,rm_20th) %>%
   ggplot(FAOmarkup3, aes(x=log(gdp,base=10), y = FAOmarkupNoCater_perT)) +
     geom_point(aes(size = pop))+
     #stat_smooth(method =  "lm") +
-    facet_wrap(~BHName, scales = "free") +
+    facet_wrap(~BHName, scales = "free", nrow=2) +
     geom_line(y = 0) +
     ggrepel::geom_text_repel(aes(label = iso3c), max.overlaps = 15)  # facet_wrap(~Bhagg, scales = "free")
 
@@ -377,7 +377,7 @@ FAOmarkup3 <- inner_join(FAOmarkup2,rm_20th) %>%
   ggplot(FAOmarkup3, aes(x= log(gdp, base=10), y = FAOmarkupwCater_perT)) +
     geom_point(aes(size = pop))+
     #stat_smooth(method =  "lm") +
-    facet_wrap(~BHName, scales = "free") +
+    facet_wrap(~BHName, scales = "free", nrow=2) +
     geom_line(y = 0) +
     ggrepel::geom_text_repel(aes(label = iso3c), max.overlaps = 15)  # facet_wrap(~Bhagg, scales = "free")
 
@@ -402,7 +402,7 @@ ggplot(regPredsNoC, aes(y=pred, x= loggdp)) +
   ggtitle("Consumer Price Markups At-Home") +
   geom_hline(yintercept=0, linetype="dashed") +
   ylab("Markup (USD$05 / tWM)") + xlab("log10(GDPpc)")+
-  facet_wrap(~ BHName) +
+  facet_wrap(~ BHName, scales = "free", nrow = 2) +
   ggrepel::geom_text_repel(aes(label = label), max.overlaps = 30) +
   theme_bw(base_size = 18)# facet_wrap(~Bhagg, scales = "free")
 #label larger countries only
@@ -419,7 +419,7 @@ ggplot(regPredswC, aes(y=pred, x= loggdp)) +
   ggtitle("Consumer Price Markups Away-from-Home") +
   geom_hline(yintercept=0, linetype="dashed") +
   ylab("Markup (USD$05 / tWM)") + xlab("log10(GDPpc)")+
-  facet_wrap(~ BHName) +
+  facet_wrap(~ BHName, scales = "free", nrow = 2) +
   ggrepel::geom_text_repel(aes(label = label), max.overlaps = 30) +
   theme_bw(base_size = 18)# facet_wrap(~Bhagg, scales = "free")
 #label larger countries only
